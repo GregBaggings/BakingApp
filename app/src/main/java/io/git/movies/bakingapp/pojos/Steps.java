@@ -107,4 +107,8 @@ public class Steps implements Parcelable {
                 ", thumbnailURL='" + thumbnailURL + '\'' +
                 '}';
     }
+
+    public String getShortStep() {
+        return "Step " + id + ": " + shortDescription;
+    }
 }
