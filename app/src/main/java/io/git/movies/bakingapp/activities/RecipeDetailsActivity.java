@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import io.git.movies.bakingapp.R;
+import io.git.movies.bakingapp.fragments.ExoplayerFragment;
 import io.git.movies.bakingapp.fragments.StepsFragment;
 import io.git.movies.bakingapp.pojos.Recipe;
 
@@ -29,9 +30,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         StepsFragment stepsFragment = new StepsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         stepsFragment.setArguments(bundle);
-
+        ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+        exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.stepsFragmentPlaceholder, stepsFragment)
+                .replace(R.id.videoFragmentPlaceholder, exoplayerFragment)
                 .commit();
     }
 
