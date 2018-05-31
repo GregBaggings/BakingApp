@@ -29,7 +29,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         StepsFragment stepsFragment = new StepsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         stepsFragment.setArguments(bundle);
-        //somehow it is not visible
+
         fragmentManager.beginTransaction()
                 .replace(R.id.stepsFragmentPlaceholder, stepsFragment)
                 .commit();
