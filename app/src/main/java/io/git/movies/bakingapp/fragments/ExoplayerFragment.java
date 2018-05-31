@@ -2,11 +2,14 @@ package io.git.movies.bakingapp.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -29,12 +32,14 @@ public class ExoplayerFragment extends Fragment {
     private Recipe recipe;
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private int position = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
+            position = getArguments().getInt("StepPosition");
             Log.i("TEST", "Recipe from Bundle: " + recipe);
         }
 
@@ -42,10 +47,21 @@ public class ExoplayerFragment extends Fragment {
         setRetainInstance(true);
 
         mPlayerView = view.findViewById(R.id.playerView);
-        initializePlayer(Uri.parse(recipe.getListOfSteps().get(0).getVideoURL()));
+        String uri = recipe.getListOfSteps().get(position).getVideoURL();
+        Log.i("Test", "Uri is " + uri);
 
-
+        if (!uri.equals("")) {
+            initializePlayer(Uri.parse(uri));
+        } else {
+            Toast.makeText(getContext(), "No video for that step!", Toast.LENGTH_LONG).show();
+            view.setVisibility(View.INVISIBLE);
+        }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initializePlayer(Uri videoUri) {
@@ -64,8 +80,5 @@ public class ExoplayerFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+
 }

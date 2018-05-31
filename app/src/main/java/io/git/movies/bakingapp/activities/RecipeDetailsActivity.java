@@ -11,8 +11,10 @@ import io.git.movies.bakingapp.fragments.ExoplayerFragment;
 import io.git.movies.bakingapp.fragments.StepsFragment;
 import io.git.movies.bakingapp.pojos.Recipe;
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnItemClickListener {
     private TextView recipeIngredientsTv;
+    ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+    StepsFragment stepsFragment = new StepsFragment();
     private Bundle bundle = new Bundle();
 
     @Override
@@ -27,15 +29,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         recipeIngredientsTv = findViewById(R.id.recipeIngredientsTextView);
         recipeIngredientsTv.setText(getIngredients(recipe));
 
-        StepsFragment stepsFragment = new StepsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        stepsFragment.setArguments(bundle);
         ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+        stepsFragment.setArguments(bundle);
         exoplayerFragment.setArguments(bundle);
-        fragmentManager.beginTransaction()
-                .replace(R.id.stepsFragmentPlaceholder, stepsFragment)
-                .replace(R.id.videoFragmentPlaceholder, exoplayerFragment)
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
     }
 
     private String getIngredients(Recipe recipe) {
@@ -47,5 +45,18 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             retVal = retVal + ingredientDetails;
         }
         return retVal.substring(0, retVal.length() - 2);
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if(exoplayerFragment != null){
+            fragmentManager.beginTransaction().remove(exoplayerFragment).commit();
+        }
+
+        ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+        bundle.putInt("StepPosition", position);
+        exoplayerFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.videoFragmentPlaceholder, exoplayerFragment).commit();
     }
 }
