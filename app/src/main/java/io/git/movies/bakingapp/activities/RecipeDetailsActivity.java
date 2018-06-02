@@ -12,7 +12,7 @@ import io.git.movies.bakingapp.fragments.StepsFragment;
 import io.git.movies.bakingapp.pojos.Recipe;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnItemClickListener {
-    private TextView recipeIngredientsTv;
+
     ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
     StepsFragment stepsFragment = new StepsFragment();
     private Bundle bundle = new Bundle();
@@ -26,8 +26,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         toolbar.setTitle(recipe.getName());
         setSupportActionBar(toolbar);
         bundle.putParcelable("Recipe", recipe);
-        recipeIngredientsTv = findViewById(R.id.recipeIngredientsTextView);
-        recipeIngredientsTv.setText(getIngredients(recipe));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
@@ -50,7 +48,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
     @Override
     public void onItemClicked(int position) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(exoplayerFragment != null){
+        if (exoplayerFragment != null) {
             fragmentManager.beginTransaction().remove(exoplayerFragment).commit();
         }
 
@@ -58,5 +56,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         bundle.putInt("StepPosition", position);
         exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.videoFragmentPlaceholder, exoplayerFragment).commit();
+
+        Recipe recipe = getIntent().getExtras().getParcelable("Recipe");
+        TextView stepDetailsTv = findViewById(R.id.stepDescriptionTv);
+        stepDetailsTv.setText(recipe.getListOfSteps().get(position).getDescription());
     }
 }

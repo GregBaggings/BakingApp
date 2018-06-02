@@ -18,15 +18,10 @@ import java.util.List;
 
 import io.git.movies.bakingapp.R;
 import io.git.movies.bakingapp.pojos.Recipe;
-import io.git.movies.bakingapp.pojos.Steps;
 
 public class StepsFragment extends ListFragment {
 
-    private List<Steps> stepsList = new ArrayList<>();
     private List<String> shortStepList = new ArrayList<>();
-    private Recipe recipe;
-    private ListView listView;
-
     OnItemClickListener itemClickListener;
 
     public interface OnItemClickListener {
@@ -47,10 +42,10 @@ public class StepsFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Recipe recipe;
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
             Log.i("TEST", "Recipe from Bundle: " + recipe);
-            getSteps(recipe);
             getShortSteps(recipe);
         }
 
@@ -62,6 +57,7 @@ public class StepsFragment extends ListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ListView listView;
         listView = getListView();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, shortStepList);
         setListAdapter(adapter);
@@ -75,12 +71,6 @@ public class StepsFragment extends ListFragment {
         });
     }
 
-    public List<Steps> getSteps(Recipe recipe) {
-        for (int i = 0; i < recipe.getListOfSteps().size(); i++) {
-            stepsList.add(recipe.getListOfSteps().get(i));
-        }
-        return stepsList;
-    }
 
     public List<String> getShortSteps(Recipe recipe) {
         for (int i = 0; i < recipe.getListOfSteps().size(); i++) {

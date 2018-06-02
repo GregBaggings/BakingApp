@@ -7,6 +7,6 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="300dp"
-        android:layout_height="300dp" />
+        android:layout_height="550dp" />
 
 </LinearLayout>
