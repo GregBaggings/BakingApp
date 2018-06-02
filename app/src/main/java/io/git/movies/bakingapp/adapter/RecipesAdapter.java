@@ -1,7 +1,5 @@
 package io.git.movies.bakingapp.adapter;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,34 +13,32 @@ import io.git.movies.bakingapp.R;
 import io.git.movies.bakingapp.activities.RecipeDetailsActivity;
 import io.git.movies.bakingapp.pojos.Recipe;
 
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder>{
-    private List<Recipe> myDataSet;
-    private Context mContext;
-    Intent intent;
+public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
+    private static List<Recipe> myDataSet;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView recipeNameTv;
-        int index;
+        private int index;
 
         public ViewHolder(View v) {
             super(v);
             recipeNameTv = v.findViewById(R.id.recipeNameTextView);
-            intent = new Intent(mContext, RecipeDetailsActivity.class);
+            final Intent intent;
+            intent = new Intent(v.getContext(), RecipeDetailsActivity.class);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     index = getAdapterPosition();
                     intent.putExtra("Recipe", myDataSet.get(index));
-                    mContext.startActivity(intent);
+                    v.getContext().startActivity(intent);
                 }
             });
         }
     }
 
-    public RecipesAdapter(Context context, List<Recipe> recipes) {
+    public RecipesAdapter(List<Recipe> recipes) {
         myDataSet = recipes;
-        mContext = context;
     }
 
     @Override

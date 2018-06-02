@@ -13,8 +13,8 @@ import io.git.movies.bakingapp.pojos.Recipe;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnItemClickListener {
 
-    ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
-    StepsFragment stepsFragment = new StepsFragment();
+    private ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+    private StepsFragment stepsFragment = new StepsFragment();
     private Bundle bundle = new Bundle();
 
     @Override
