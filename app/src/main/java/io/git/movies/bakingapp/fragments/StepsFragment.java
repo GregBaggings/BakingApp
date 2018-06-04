@@ -21,23 +21,7 @@ import io.git.movies.bakingapp.pojos.Recipe;
 public class StepsFragment extends Fragment{
 
     private List<String> shortStepList = new ArrayList<>();
- /*   OnItemClickListener itemClickListener;
-
-
-    public interface OnItemClickListener {
-        void onItemClicked(int position);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            itemClickListener = (OnItemClickListener) context;
-        } catch (ClassCastException exception) {
-            throw new ClassCastException(context.toString());
-        }
-    }*/
+   // StepsAdapter.ViewHolder.OnItemClickListener clickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -60,7 +44,7 @@ public class StepsFragment extends Fragment{
 
         RecyclerView recyclerView = view.findViewById(R.id.steps_recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList);
+        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList, (StepsAdapter.ViewHolder.OnItemClickListener)getActivity());
         recyclerView.setAdapter(mAdapter);
     }
 

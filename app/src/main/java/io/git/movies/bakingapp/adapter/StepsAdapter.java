@@ -15,10 +15,11 @@ import io.git.movies.bakingapp.R;
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
     private static List<String> myDataSet;
     public static int index;
+    static ViewHolder.OnItemClickListener itemClickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView shortStepTv;
-        OnItemClickListener itemClickListener;
+
 
         public interface OnItemClickListener {
             void onItemClicked(int position);
@@ -39,8 +40,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
         }
     }
 
-    public StepsAdapter(List<String> shortStepList) {
+    public StepsAdapter(List<String> shortStepList, ViewHolder.OnItemClickListener clickListener) {
         myDataSet = shortStepList;
+        itemClickListener = clickListener;
     }
 
     @NonNull
