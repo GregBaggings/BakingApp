@@ -5,32 +5,41 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredient implements Parcelable{
+public class Ingredients implements Parcelable {
 
     @SerializedName("quantity")
-    Double quantity;
+    private Double quantity;
     @SerializedName("measure")
-    String measure;
+    private String measure;
     @SerializedName("ingredient")
-    String ingredient;
+    private String ingredient;
 
-    protected Ingredient(Parcel in) {
-        quantity = in.readDouble();
+    protected Ingredients(Parcel in) {
+        if (in.readByte() == 0) {
+            quantity = null;
+        } else {
+            quantity = in.readDouble();
+        }
         measure = in.readString();
         ingredient = in.readString();
     }
 
-    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
+    public static final Creator<Ingredients> CREATOR = new Creator<Ingredients>() {
         @Override
-        public Ingredient createFromParcel(Parcel in) {
-            return new Ingredient(in);
+        public Ingredients createFromParcel(Parcel in) {
+            return new Ingredients(in);
         }
 
         @Override
-        public Ingredient[] newArray(int size) {
-            return new Ingredient[size];
+        public Ingredients[] newArray(int size) {
+            return new Ingredients[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return quantity + " " + measure + " of " + ingredient + "/n";
+    }
 
     @Override
     public int describeContents() {
@@ -39,7 +48,12 @@ public class Ingredient implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(quantity);
+        if (quantity == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(quantity);
+        }
         dest.writeString(measure);
         dest.writeString(ingredient);
     }
@@ -68,16 +82,7 @@ public class Ingredient implements Parcelable{
         this.ingredient = ingredient;
     }
 
-    public static Creator<Ingredient> getCREATOR() {
+    public static Creator<Ingredients> getCREATOR() {
         return CREATOR;
-    }
-
-    @Override
-    public String toString() {
-        return "Ingredient{" +
-                "quantity=" + quantity +
-                ", measure='" + measure + '\'' +
-                ", ingredient='" + ingredient + '\'' +
-                '}';
     }
 }

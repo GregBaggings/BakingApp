@@ -11,21 +11,23 @@ import java.util.List;
 public class Recipe implements Parcelable {
 
     @SerializedName("id")
-    int id;
+    private int id;
     @SerializedName("name")
-    String name;
+    private String name;
     @SerializedName("ingredients")
-    List<Ingredient> listOfIngredients;
+    private List<Ingredients> listOfIngredients;
     @SerializedName("steps")
-    List<Steps> listOfSteps;
+    private List<Steps> listOfSteps;
     @SerializedName("servings")
-    int servings;
+    private int servings;
     @SerializedName("image")
-    String image;
+    private  String image;
+
 
     protected Recipe(Parcel in) {
         id = in.readInt();
         name = in.readString();
+        listOfIngredients = in.createTypedArrayList(Ingredients.CREATOR);
         listOfSteps = in.createTypedArrayList(Steps.CREATOR);
         servings = in.readInt();
         image = in.readString();
@@ -44,6 +46,18 @@ public class Recipe implements Parcelable {
     };
 
     @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", listOfIngredients=" + listOfIngredients +
+                ", listOfSteps=" + listOfSteps +
+                ", servings=" + servings +
+                ", image='" + image + '\'' +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -52,6 +66,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
+        dest.writeTypedList(listOfIngredients);
         dest.writeTypedList(listOfSteps);
         dest.writeInt(servings);
         dest.writeString(image);
@@ -73,11 +88,11 @@ public class Recipe implements Parcelable {
         this.name = name;
     }
 
-    public List<Ingredient> getListOfIngredients() {
+    public List<Ingredients> getListOfIngredients() {
         return listOfIngredients;
     }
 
-    public void setListOfIngredients(List<Ingredient> listOfIngredients) {
+    public void setListOfIngredients(List<Ingredients> listOfIngredients) {
         this.listOfIngredients = listOfIngredients;
     }
 
@@ -107,17 +122,5 @@ public class Recipe implements Parcelable {
 
     public static Creator<Recipe> getCREATOR() {
         return CREATOR;
-    }
-
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", listOfIngredients=" + listOfIngredients +
-                ", listOfSteps=" + listOfSteps +
-                ", servings=" + servings +
-                ", image='" + image + '\'' +
-                '}';
     }
 }

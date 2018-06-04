@@ -5,27 +5,15 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,19 +24,17 @@ import io.git.movies.bakingapp.api.AsyncEventListener;
 import io.git.movies.bakingapp.api.AsyncRecipesRequestHandler;
 import io.git.movies.bakingapp.api.RecipesAPI;
 import io.git.movies.bakingapp.api.RecipesAPIInterface;
-
 import io.git.movies.bakingapp.pojos.Recipe;
-import io.git.movies.bakingapp.utils.ConnectionChecker;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
+import static io.git.movies.bakingapp.utils.ConnectionChecker.checkInternetConnection;
+
 public class MainActivity extends AppCompatActivity {
 
-    List<String> recipeNames = new ArrayList<>();
     private RecipesAPIInterface service = RecipesAPI.getRetrofit().create(RecipesAPIInterface.class);
     private Parcelable recyclerViewState;
     private RecyclerView.Adapter mAdapter;
-    private ConnectionChecker connectionChecker = new ConnectionChecker();
     private RecyclerView.LayoutManager mLayoutManager;
 
     @BindView(R.id.loading_indicator)
@@ -70,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        if (!connectionChecker.checkInternetConnection(getApplicationContext())) {
+        if (!checkInternetConnection(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_LONG).show();
         } else {
             loadingIndicator.setVisibility(View.INVISIBLE);
@@ -80,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-
-
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -107,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 Type listType = new TypeToken<List<Recipe>>() {}.getType();
                 List<Recipe> recipes = gson.fromJson(response, listType);
 
-                mAdapter = new RecipesAdapter(getApplicationContext(), recipes);
+                mAdapter = new RecipesAdapter( recipes);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 
