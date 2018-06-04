@@ -21,7 +21,6 @@ import io.git.movies.bakingapp.pojos.Recipe;
 public class StepsFragment extends Fragment{
 
     private List<String> shortStepList = new ArrayList<>();
-   // StepsAdapter.ViewHolder.OnItemClickListener clickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater,

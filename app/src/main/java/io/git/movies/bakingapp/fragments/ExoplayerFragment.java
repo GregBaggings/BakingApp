@@ -79,6 +79,4 @@ public class ExoplayerFragment extends Fragment {
             mExoPlayer.setPlayWhenReady(true);
         }
     }
-
-
 }
