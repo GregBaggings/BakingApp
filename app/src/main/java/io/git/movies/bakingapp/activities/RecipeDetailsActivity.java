@@ -7,11 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import io.git.movies.bakingapp.R;
+import io.git.movies.bakingapp.adapter.StepsAdapter;
 import io.git.movies.bakingapp.fragments.ExoplayerFragment;
 import io.git.movies.bakingapp.fragments.StepsFragment;
 import io.git.movies.bakingapp.pojos.Recipe;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnItemClickListener {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepsAdapter.ViewHolder.OnItemClickListener {
 
     private ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
     private StepsFragment stepsFragment = new StepsFragment();
@@ -32,17 +33,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         stepsFragment.setArguments(bundle);
         exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
-    }
-
-    private String getIngredients(Recipe recipe) {
-        String retVal = "";
-        for (int i = 0; i < recipe.getListOfIngredients().size(); i++) {
-            String ingredientDetails = recipe.getListOfIngredients().get(i).getQuantity() + " " +
-                    recipe.getListOfIngredients().get(i).getMeasure() + " of " +
-                    recipe.getListOfIngredients().get(i).getIngredient() + ",\n";
-            retVal = retVal + ingredientDetails;
-        }
-        return retVal.substring(0, retVal.length() - 2);
     }
 
     @Override
