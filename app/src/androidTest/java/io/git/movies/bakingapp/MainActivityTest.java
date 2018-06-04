@@ -14,6 +14,7 @@ import io.git.movies.bakingapp.activities.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -35,9 +36,19 @@ public class MainActivityTest {
     }
 
     @Test
-    public void selectTheSecondRecipeAndCheckStepsFragment() throws InterruptedException {
+    public void selectTheFirstRecipeAndCheckStepsFragment() throws InterruptedException {
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.stepsFragmentPlaceholder)).check(matches(isDisplayed()));
+        onView(withId(R.id.steps_recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.steps_recycler_view)).check(matches(hasDescendant(withText("Step 1: Starting prep"))));
         onView(withId(R.id.videoFragmentPlaceholder)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void selectTheFirstRecipeAndClickOnFirstStepItem() throws InterruptedException {
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.steps_recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.steps_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.videoFragmentPlaceholder)).check(matches(isDisplayed()));
+        onView(withId(R.id.stepDescriptionTv)).check(matches(withText("Recipe Introduction")));
     }
 }
