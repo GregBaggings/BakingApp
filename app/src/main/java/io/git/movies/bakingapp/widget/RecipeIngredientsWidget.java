@@ -12,9 +12,11 @@ import android.widget.RemoteViews;
 import io.git.movies.bakingapp.R;
 import io.git.movies.bakingapp.activities.MainActivity;
 import io.git.movies.bakingapp.pojos.Recipe;
+import io.git.movies.bakingapp.utils.IngredientsHandler;
 
 public class RecipeIngredientsWidget extends AppWidgetProvider {
     private Recipe recipe = null;
+    private static IngredientsHandler ingredientsHandler = new IngredientsHandler();
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, Recipe recipe,
                                 int appWidgetId) {
@@ -22,7 +24,7 @@ public class RecipeIngredientsWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredients_widget);
 
         if(recipe != null){
-            views.setTextViewText(R.id.widgetIngredientsTv, recipe.getListOfIngredients().toString());
+            views.setTextViewText(R.id.widgetIngredientsTv, ingredientsHandler.getIngredients(recipe));
             Log.i("TEST", "Recipe at the widget: " + recipe.toString());
         }
 
