@@ -23,6 +23,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Recipe recipe = getIntent().getExtras().getParcelable("Recipe");
         setContentView(R.layout.activity_recipe_details);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -35,7 +36,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         stepsFragment.setArguments(bundle);
         exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
+
         widget.onReceive(getApplicationContext(), getIntent());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
