@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter = new RecipesAdapter( recipes);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-
             }
         });
 

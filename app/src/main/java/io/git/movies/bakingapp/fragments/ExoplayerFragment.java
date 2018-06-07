@@ -33,7 +33,7 @@ public class ExoplayerFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private int position = 0;
-    private long videoPosition=0;
+    private long videoPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -41,9 +41,9 @@ public class ExoplayerFragment extends Fragment {
 
         if (savedInstanceState != null) {
             videoPosition = savedInstanceState.getLong("videoPosition");
-            Log.i("TEST", "videoPosition is " + videoPosition);
-            mExoPlayer.seekTo(videoPosition);
+                Log.i("TEST", "videoPosition is " + videoPosition);
         }
+
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
             position = getArguments().getInt("StepPosition");
