@@ -20,11 +20,10 @@ public class RecipeIngredientsWidget extends AppWidgetProvider {
                                 int appWidgetId) {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredients_widget);
-        Log.i("TEST", "Trolllolo: " + recipe.toString());
 
         if(recipe != null){
             views.setTextViewText(R.id.widgetIngredientsTv, recipe.getListOfIngredients().toString());
-            Log.i("TEST", "Trolllolo: " + recipe.toString());
+            Log.i("TEST", "Recipe at the widget: " + recipe.toString());
         }
 
         Intent intent = new Intent(context, MainActivity.class);
