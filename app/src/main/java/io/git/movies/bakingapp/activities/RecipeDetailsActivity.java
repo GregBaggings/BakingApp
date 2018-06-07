@@ -11,11 +11,13 @@ import io.git.movies.bakingapp.adapter.StepsAdapter;
 import io.git.movies.bakingapp.fragments.ExoplayerFragment;
 import io.git.movies.bakingapp.fragments.StepsFragment;
 import io.git.movies.bakingapp.pojos.Recipe;
+import io.git.movies.bakingapp.widget.RecipeIngredientsWidget;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsAdapter.ViewHolder.OnItemClickListener {
 
     private ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
     private StepsFragment stepsFragment = new StepsFragment();
+    private RecipeIngredientsWidget widget = new RecipeIngredientsWidget();
     private Bundle bundle = new Bundle();
 
     @Override
@@ -33,6 +35,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         stepsFragment.setArguments(bundle);
         exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
+        widget.onReceive(getApplicationContext(), getIntent());
     }
 
     @Override

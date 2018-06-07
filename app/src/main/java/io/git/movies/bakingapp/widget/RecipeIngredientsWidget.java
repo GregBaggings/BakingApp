@@ -39,17 +39,12 @@ public class RecipeIngredientsWidget extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context.getApplicationContext(), RecipeIngredientsWidget.class));
 
-        final String action = intent.getAction();
-
-        if (action != null && action.equals(IngredientsService.UPDATE_INGREDIENTS)) {
-
-            if (intent.getExtras() != null) {
+         if (intent.getExtras() != null) {
                 recipe = intent.getExtras().getParcelable("Recipe");
             } else {
                 Log.e(context.getPackageName(), "Recipe is null");
             }
             onUpdate(context, appWidgetManager, appWidgetIds);
-        }
 
         super.onReceive(context, intent);
     }
