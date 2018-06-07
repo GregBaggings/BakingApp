@@ -64,6 +64,19 @@ public class ExoplayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        releasePlayer();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+    }
+
     private void initializePlayer(Uri videoUri) {
         if (mExoPlayer == null) {
 
@@ -77,6 +90,13 @@ public class ExoplayerFragment extends Fragment {
                     this.getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            mExoPlayer.release();
+            mExoPlayer = null;
         }
     }
 }
