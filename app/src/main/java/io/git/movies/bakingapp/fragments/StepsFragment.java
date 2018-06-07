@@ -1,6 +1,7 @@
 package io.git.movies.bakingapp.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,13 +23,14 @@ public class StepsFragment extends Fragment {
 
     private List<String> shortStepList = new ArrayList<>();
     private RecyclerView recyclerView;
+    private Parcelable recyclerViewState;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         if (savedInstanceState != null) {
-            savedInstanceState.getParcelable("STEPS");
+            recyclerViewState = savedInstanceState.getParcelable("STEPS");
         }
 
         Recipe recipe;
