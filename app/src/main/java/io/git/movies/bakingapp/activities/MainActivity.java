@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(String response) {
-                recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
                 loadingIndicator.setVisibility(View.INVISIBLE);
 
                 Gson gson = new Gson();
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter = new RecipesAdapter( recipes);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
-
             }
         });
 

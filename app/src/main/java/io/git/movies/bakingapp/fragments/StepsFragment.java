@@ -1,6 +1,7 @@
 package io.git.movies.bakingapp.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,13 +19,20 @@ import io.git.movies.bakingapp.R;
 import io.git.movies.bakingapp.adapter.StepsAdapter;
 import io.git.movies.bakingapp.pojos.Recipe;
 
-public class StepsFragment extends Fragment{
+public class StepsFragment extends Fragment {
 
     private List<String> shortStepList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private Parcelable recyclerViewState;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            recyclerViewState = savedInstanceState.getParcelable("STEPS");
+        }
+
         Recipe recipe;
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
@@ -41,10 +49,16 @@ public class StepsFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
 
-        RecyclerView recyclerView = view.findViewById(R.id.steps_recycler_view);
+        recyclerView = view.findViewById(R.id.steps_recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList, (StepsAdapter.ViewHolder.OnItemClickListener)getActivity());
+        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList, (StepsAdapter.ViewHolder.OnItemClickListener) getActivity());
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("STEPS", recyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     public List<String> getShortSteps(Recipe recipe) {

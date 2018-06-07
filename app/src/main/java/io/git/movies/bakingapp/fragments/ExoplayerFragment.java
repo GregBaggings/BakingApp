@@ -33,10 +33,17 @@ public class ExoplayerFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private int position = 0;
+    private long videoPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            videoPosition = savedInstanceState.getLong("videoPosition");
+                Log.i("TEST", "videoPosition is " + videoPosition);
+        }
+
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
             position = getArguments().getInt("StepPosition");
@@ -64,6 +71,36 @@ public class ExoplayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("videoPosition", videoPosition);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        releasePlayer();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            videoPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+    }
+
     private void initializePlayer(Uri videoUri) {
         if (mExoPlayer == null) {
 
@@ -77,6 +114,13 @@ public class ExoplayerFragment extends Fragment {
                     this.getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            mExoPlayer.release();
+            mExoPlayer = null;
         }
     }
 }
