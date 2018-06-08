@@ -74,9 +74,8 @@ public class ExoplayerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        // commented as throws an NPE due to some reason
-        //  boolean isPlayWhenReady = mExoPlayer.getPlayWhenReady();
-        //  outState.putBoolean("playState", isPlayWhenReady);
+        boolean isPlayWhenReady = mExoPlayer.getPlayWhenReady();
+        outState.putBoolean("playState", isPlayWhenReady);
         outState.putLong("videoPosition", videoPosition);
     }
 

@@ -19,7 +19,7 @@ import io.git.movies.bakingapp.widget.RecipeIngredientsWidget;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsAdapter.ViewHolder.OnItemClickListener {
 
-    private ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+    private ExoplayerFragment exoplayerFragment;// = new ExoplayerFragment();
     private StepsFragment stepsFragment = new StepsFragment();
     private RecipeIngredientsWidget widget = new RecipeIngredientsWidget();
     private Bundle bundle = new Bundle();
@@ -27,6 +27,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState == null) {
+            ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+            exoplayerFragment.setArguments(bundle);
+        }
 
         Recipe recipe = getIntent().getExtras().getParcelable("Recipe");
         setContentView(R.layout.activity_recipe_details);
@@ -59,9 +64,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
+
         stepsFragment.setArguments(bundle);
-        exoplayerFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
 
         widget.onReceive(getApplicationContext(), getIntent());
