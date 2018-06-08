@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 Type listType = new TypeToken<List<Recipe>>() {}.getType();
                 List<Recipe> recipes = gson.fromJson(response, listType);
 
-                mAdapter = new RecipesAdapter( recipes);
+                mAdapter = new RecipesAdapter(recipes);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
             }

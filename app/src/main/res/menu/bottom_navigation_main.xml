@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/prev_step"
+        android:enabled="true"
+        android:icon="@drawable/exo_controls_previous"
+        android:title="@string/prev_step_text"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/backButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_back_to_recipes"
+        android:title="@string/backToMain"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/next_step"
+        android:enabled="true"
+        android:icon="@drawable/exo_controls_next"
+        android:title="@string/next_step_text"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -1,9 +1,13 @@
 package io.git.movies.bakingapp.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import io.git.movies.bakingapp.R;
@@ -30,6 +34,29 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         toolbar.setTitle(recipe.getName());
         setSupportActionBar(toolbar);
         bundle.putParcelable("Recipe", recipe);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    int currentPosition = bundle.getInt("Position");
+
+                    //TODO add check for length to avoid indexoutofbound exception
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Log.i("TEST", "current position is " + currentPosition);
+                        switch (item.getItemId()) {
+                            case R.id.prev_step:
+                                onItemClicked(--currentPosition);
+                            case R.id.backButton:
+                                finish();
+                            case R.id.next_step:
+                                onItemClicked(++currentPosition);
+                        }
+                        return true;
+                    }
+                });
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         ExoplayerFragment exoplayerFragment = new ExoplayerFragment();

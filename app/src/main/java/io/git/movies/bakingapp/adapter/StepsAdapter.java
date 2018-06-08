@@ -14,12 +14,11 @@ import io.git.movies.bakingapp.R;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
     private static List<String> myDataSet;
-    public static int index;
+    private static int index;
     static ViewHolder.OnItemClickListener itemClickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView shortStepTv;
-
 
         public interface OnItemClickListener {
             void onItemClicked(int position);
@@ -56,6 +55,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.shortStepTv.setText(myDataSet.get(position));
+        itemClickListener.onItemClicked(holder.getAdapterPosition());
     }
 
     @Override

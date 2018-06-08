@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,15 @@ import java.util.List;
 import io.git.movies.bakingapp.R;
 import io.git.movies.bakingapp.adapter.StepsAdapter;
 import io.git.movies.bakingapp.pojos.Recipe;
+import io.git.movies.bakingapp.utils.IngredientsHandler;
 
 public class StepsFragment extends Fragment {
 
     private List<String> shortStepList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Parcelable recyclerViewState;
+    private Recipe recipe;
+    private IngredientsHandler ingredientsHandler = new IngredientsHandler();
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -33,7 +37,7 @@ public class StepsFragment extends Fragment {
             recyclerViewState = savedInstanceState.getParcelable("STEPS");
         }
 
-        Recipe recipe;
+
         if (getArguments() != null) {
             recipe = getArguments().getParcelable("Recipe");
             Log.i("TEST", "Recipe from Bundle: " + recipe);
@@ -48,6 +52,9 @@ public class StepsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
+
+        TextView ingredientsTv = view.findViewById(R.id.ingredientsTv);
+        ingredientsTv.setText(ingredientsHandler.getIngredients(recipe));
 
         recyclerView = view.findViewById(R.id.steps_recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
