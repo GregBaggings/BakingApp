@@ -12,4 +12,5 @@
     <string name="next_step_text">Next Step</string>
     <string name="prev_step_text">Prev. Step</string>
     <string name="backToMain">Back to recipes</string>
+    <string name="thumbnailIV_default">default</string>
 </resources>

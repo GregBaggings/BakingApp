@@ -58,7 +58,7 @@ public class StepsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.steps_recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList, (StepsAdapter.ViewHolder.OnItemClickListener) getActivity());
+        RecyclerView.Adapter mAdapter = new StepsAdapter(shortStepList, (StepsAdapter.ViewHolder.OnItemClickListener) getActivity(), getContext(), recipe);
         recyclerView.setAdapter(mAdapter);
     }
 
