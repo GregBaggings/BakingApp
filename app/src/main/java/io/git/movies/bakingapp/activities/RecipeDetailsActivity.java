@@ -42,7 +42,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         toolbar.setTitle(recipe.getName());
         setSupportActionBar(toolbar);
         bundle.putParcelable("Recipe", recipe);
-        currentPosition = bundle.getInt("StepPosition");
         FragmentManager fragmentManager = getSupportFragmentManager();
         stepsFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
@@ -51,21 +50,29 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+                    public void getRecyclerViewForStepsFragment() {
+                        RecyclerView recyclerView = findViewById(R.id.steps_recycler_view);
+                        maxPosition = recyclerView.getAdapter().getItemCount();
+                        currentPosition = bundle.getInt("StepPosition");
+                    }
+
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        getRecyclerViewForStepsFragment();
                         Log.i("TEST", "current position is " + currentPosition);
                         Log.i("TEST", "Steps size is " + maxPosition);
                         switch (item.getItemId()) {
                             case R.id.prev_step:
-                                if (currentPosition > 0) {
+                                if (currentPosition - 1 >= 0) {
                                     onItemClicked(--currentPosition);
                                 } else {
                                     break;
                                 }
+
                             case R.id.backButton:
                                 finish();
                             case R.id.next_step:
-                                if (currentPosition < maxPosition - 1) {
+                                if (currentPosition + 1 < maxPosition) {
                                     onItemClicked(++currentPosition);
                                 } else {
                                     break;
@@ -76,6 +83,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
                 });
 
         widget.onReceive(getApplicationContext(), getIntent());
+        onItemClicked(0);
     }
 
     @Override
@@ -85,7 +93,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
 
     @Override
     public void onItemClicked(int position) {
-        Log.i("TEST", "Meh");
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (exoplayerFragment != null) {
             fragmentManager.beginTransaction().remove(exoplayerFragment).commit();
@@ -99,11 +106,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         Recipe recipe = getIntent().getExtras().getParcelable("Recipe");
         TextView stepDetailsTv = findViewById(R.id.stepDescriptionTv);
         stepDetailsTv.setText(recipe.getListOfSteps().get(position).getDescription());
-        getRecyclerViewForStepsFragment();
+
     }
 
-    public void getRecyclerViewForStepsFragment() {
-        RecyclerView recyclerView = findViewById(R.id.steps_recycler_view);
-        maxPosition = recyclerView.getAdapter().getItemCount();
-    }
 }
