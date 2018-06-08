@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -59,24 +58,27 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         getRecyclerViewForStepsFragment();
-                        Log.i("TEST", "current position is " + currentPosition);
-                        Log.i("TEST", "Steps size is " + maxPosition);
                         switch (item.getItemId()) {
-                            case R.id.prev_step:
+                            case R.id.prev_step: {
                                 if (currentPosition - 1 >= 0) {
                                     onItemClicked(--currentPosition);
                                 } else {
                                     break;
                                 }
-
-                            case R.id.backButton:
+                            }
+                            break;
+                            case R.id.backButton: {
                                 finish();
-                            case R.id.next_step:
+                            }
+                            break;
+                            case R.id.next_step: {
                                 if (currentPosition + 1 < maxPosition) {
                                     onItemClicked(++currentPosition);
                                 } else {
                                     break;
                                 }
+                            }
+                            break;
                         }
                         return true;
                     }
