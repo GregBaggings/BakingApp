@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,16 +20,18 @@ import io.git.movies.bakingapp.widget.RecipeIngredientsWidget;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsAdapter.ViewHolder.OnItemClickListener {
 
-    private ExoplayerFragment exoplayerFragment;// = new ExoplayerFragment();
+    private ExoplayerFragment exoplayerFragment;
     private StepsFragment stepsFragment = new StepsFragment();
     private RecipeIngredientsWidget widget = new RecipeIngredientsWidget();
     private Bundle bundle = new Bundle();
+    private int maxPosition = 99;
+    private int currentPosition = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             ExoplayerFragment exoplayerFragment = new ExoplayerFragment();
             exoplayerFragment.setArguments(bundle);
         }
@@ -39,34 +42,38 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         toolbar.setTitle(recipe.getName());
         setSupportActionBar(toolbar);
         bundle.putParcelable("Recipe", recipe);
+        currentPosition = bundle.getInt("StepPosition");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        stepsFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    int currentPosition = bundle.getInt("Position");
 
-                    //TODO add check for length to avoid indexoutofbound exception
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Log.i("TEST", "current position is " + currentPosition);
+                        Log.i("TEST", "Steps size is " + maxPosition);
                         switch (item.getItemId()) {
                             case R.id.prev_step:
-                                onItemClicked(--currentPosition);
+                                if (currentPosition > 0) {
+                                    onItemClicked(--currentPosition);
+                                } else {
+                                    break;
+                                }
                             case R.id.backButton:
                                 finish();
                             case R.id.next_step:
-                                onItemClicked(++currentPosition);
+                                if (currentPosition < maxPosition - 1) {
+                                    onItemClicked(++currentPosition);
+                                } else {
+                                    break;
+                                }
                         }
                         return true;
                     }
                 });
-
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        stepsFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.stepsFragmentPlaceholder, stepsFragment).commit();
 
         widget.onReceive(getApplicationContext(), getIntent());
     }
@@ -78,6 +85,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
 
     @Override
     public void onItemClicked(int position) {
+        Log.i("TEST", "Meh");
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (exoplayerFragment != null) {
             fragmentManager.beginTransaction().remove(exoplayerFragment).commit();
@@ -91,5 +99,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsAda
         Recipe recipe = getIntent().getExtras().getParcelable("Recipe");
         TextView stepDetailsTv = findViewById(R.id.stepDescriptionTv);
         stepDetailsTv.setText(recipe.getListOfSteps().get(position).getDescription());
+        getRecyclerViewForStepsFragment();
+    }
+
+    public void getRecyclerViewForStepsFragment() {
+        RecyclerView recyclerView = findViewById(R.id.steps_recycler_view);
+        maxPosition = recyclerView.getAdapter().getItemCount();
     }
 }
